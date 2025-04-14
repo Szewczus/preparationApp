@@ -1,0 +1,9 @@
+ docker-compose up -d
+
+| Method | Endpoint                                  | Description                   |
+|--------|-------------------------------------------|-------------------------------|
+| GET    | `/account-user/{id}`                      | Get specyfic user by id       |
+| POST   | `/account-user/create`                    | Add a new user                |
+| PUT    | `/account-user/updateAllAccountUserData/1`| Update an existing user       |
+| PATCH  | `/updateSurname/{id}`                     | Update surname in user        |
+| DELETE | `/account-user/{id}`                      | Delete a user by ID           |

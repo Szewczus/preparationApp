@@ -8,6 +8,7 @@ public class PreparationAppApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PreparationAppApplication.class, args);
+        //dupa
     }
 
 }
