@@ -29,4 +29,8 @@ public class AccountUserService {
         accountUser.setSurname(updatedAccountUser.getSurname());
         return accountUserRepository.save(accountUser);
     }
+
+    public void deleteUser(Long id){
+        accountUserRepository.deleteById(id);
+    }
 }

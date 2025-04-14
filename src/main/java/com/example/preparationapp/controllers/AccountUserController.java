@@ -49,4 +49,14 @@ public class AccountUserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(accountUser);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id){
+        AccountUser accountUser = accountUserService.getUser(id);
+        if(accountUser == null){
+            return ResponseEntity.notFound().build();
+        }
+        accountUserService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }
