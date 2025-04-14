@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db-preparation-app
+    environment:
+      POSTGRES_USER: admin        # Nazwa użytkownika bazy danych
+      POSTGRES_PASSWORD: admin    # Hasło użytkownika
+      POSTGRES_DB: mydatabase     # Nazwa bazy danych
+    ports:
+      - "5433:5432"               # Mapowanie portów (host:kontener)
+    volumes:
+      - postgres-data:/var/lib/postgresql/data # Persistencja danych
+
+volumes:
+  postgres-data:                  # Definicja wolumenu do przechowywania danych
+
