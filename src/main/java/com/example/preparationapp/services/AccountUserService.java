@@ -1,6 +1,6 @@
 package com.example.preparationapp.services;
 
-import com.example.preparationapp.UpdatedAccountUser;
+import com.example.preparationapp.models.UpdatedAccountUser;
 import com.example.preparationapp.entity.AccountUser;
 import com.example.preparationapp.repositories.AccountUserRepository;
 import org.springframework.stereotype.Service;

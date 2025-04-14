@@ -1,6 +1,6 @@
 package com.example.preparationapp.controllers;
 
-import com.example.preparationapp.UpdatedAccountUser;
+import com.example.preparationapp.models.UpdatedAccountUser;
 import com.example.preparationapp.entity.AccountUser;
 import com.example.preparationapp.services.AccountUserService;
 import org.springframework.http.HttpStatus;
@@ -50,7 +50,7 @@ public class AccountUserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable Long id){
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         AccountUser accountUser = accountUserService.getUser(id);
         if(accountUser == null){
             return ResponseEntity.notFound().build();

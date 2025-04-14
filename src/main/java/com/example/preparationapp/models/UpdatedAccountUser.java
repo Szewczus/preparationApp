@@ -1,4 +1,4 @@
-package com.example.preparationapp;
+package com.example.preparationapp.models;
 
 import lombok.*;
 
