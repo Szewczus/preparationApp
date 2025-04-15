@@ -3,14 +3,17 @@ package com.example.preparationapp.services;
 import com.example.preparationapp.models.UpdatedAccountUser;
 import com.example.preparationapp.entity.AccountUser;
 import com.example.preparationapp.repositories.AccountUserRepository;
+import com.example.preparationapp.repositories.TripPlanRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountUserService {
+    private final TripPlanRepository tripPlanRepository;
 
     private final AccountUserRepository accountUserRepository;
 
-    public AccountUserService(AccountUserRepository accountUserRepository) {
+    public AccountUserService(TripPlanRepository tripPlanRepository, AccountUserRepository accountUserRepository) {
+        this.tripPlanRepository = tripPlanRepository;
         this.accountUserRepository = accountUserRepository;
     }
 
