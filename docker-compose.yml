@@ -11,6 +11,41 @@ services:
       - "5433:5432"               # Mapowanie portów (host:kontener)
     volumes:
       - postgres-data:/var/lib/postgresql/data # Persistencja danych
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_LOG_DIRS: /kafka/kraft-combined-logs
+      KAFKA_CLUSTER_ID: afe3c67d-3d4d-48fa-a950-7156328603d9
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      #KAFKA_LISTENERS: PLAINTEXT://kafka:9092,CONTROLLER://kafka:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      # Definiowanie roli procesu (broker + controller w jednym)
+      KAFKA_PROCESS_ROLES: broker,controller
+      #Mapowanie nazw listenerów do protokołów bezpieczeństwa
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      # Listener reklamowany dla klientów Kafka
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      # Listener dla kontrolera (musi być wśród KAFKA_LISTENERS)
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_NODE_ID: 1  # Unikalny identyfikator instancji (wymagany w KRaft)
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093    # Definiowanie różnych słuchaczy
+
+
+
+
+
+
+
+
+
+    volumes:
+      - ./data/kafka:/kafka/kraft-combined-logs
+    ports:
+      - 9092:9092
 
 volumes:
   postgres-data:                  # Definicja wolumenu do przechowywania danych

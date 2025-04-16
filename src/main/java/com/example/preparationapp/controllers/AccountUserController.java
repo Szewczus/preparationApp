@@ -3,9 +3,12 @@ package com.example.preparationapp.controllers;
 import com.example.preparationapp.models.UpdatedAccountUser;
 import com.example.preparationapp.entity.AccountUser;
 import com.example.preparationapp.services.AccountUserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class AccountUserController {
 
     private final AccountUserService accountUserService;
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
 
     public AccountUserController(AccountUserService accountUserService) {
         this.accountUserService = accountUserService;
@@ -31,6 +37,8 @@ public class AccountUserController {
     @PostMapping("/create")
     public ResponseEntity<AccountUser> createUser(@RequestBody AccountUser accountUser){
         AccountUser newAccountUser = accountUserService.saveAccountUser(accountUser);
+        ObjectMapper objectMapper = new ObjectMapper();
+        kafkaTemplate.send("input-topic", "test");
         log.info("User created");
         return ResponseEntity.status(HttpStatus.CREATED).body(newAccountUser);
     }
