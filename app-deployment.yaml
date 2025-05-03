@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-preparation-app
+  labels:
+    app: my-preparation-app
+spec:
+  replicas: 2 # Liczba replik aplikacji
+  selector:
+    matchLabels:
+      app: my-preparation-app
+  template:
+    metadata:
+      labels:
+        app: my-preparation-app
+    spec:
+      containers:
+        - name: my-preparation-app
+          image: ewa1234/my-preparation-app:0.0.1 # Nazwa obrazu
+          ports:
+            - containerPort: 8080
+          env: # Zmienne środowiskowe dla aplikacji Spring Boot
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-service:5432/mydatabase
+            - name: SPRING_DATASOURCE_USERNAME
+              value: admin
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: admin

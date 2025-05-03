@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   postgres:
     image: postgres:latest
@@ -8,9 +7,15 @@ services:
       POSTGRES_PASSWORD: admin    # Hasło użytkownika
       POSTGRES_DB: mydatabase     # Nazwa bazy danych
     ports:
-      - "5433:5432"               # Mapowanie portów (host:kontener)
+      - "5432:5432"               # Mapowanie portów (host:kontener)
     volumes:
       - postgres-data:/var/lib/postgresql/data # Persistencja danych
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myuser -d mydb" ]
+      interval: 10s       # Time between health checks (10 seconds)
+      timeout: 5s         # Time to wait for a response (5 seconds)
+      retries: 3          # Number of retries before considering the container unhealthy
+
   kafka:
     image: apache/kafka:latest
     container_name: kafka
@@ -34,19 +39,27 @@ services:
       KAFKA_NODE_ID: 1  # Unikalny identyfikator instancji (wymagany w KRaft)
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093    # Definiowanie różnych słuchaczy
 
-
-
-
-
-
-
-
-
     volumes:
       - ./data/kafka:/kafka/kraft-combined-logs
     ports:
       - 9092:9092
+  app:
+    image:  mypreparationapp:latest
+    container_name: my-preparation-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+
 
 volumes:
-  postgres-data:                  # Definicja wolumenu do przechowywania danych
+  postgres-data:                  # Definicja wolumenu do przechowywania danych4
+
 
